@@ -1,1 +1,39 @@
+# I first create corpuses containing each document within each respective dataset
 
+democrats <- Corpus(DirSource(“Data/Democrats”))
+republicans <- Corpus(DirSource(“Data/Republicans”))
+
+# I then clean the democrats corpus
+
+democrats <- tm_map(democrats, removePunctuation)
+democrats <- tm_map(democrats, removeNumbers)
+democrats <- tm_map(democrats, removeWords, stopwords ("english"))
+democrats <- tm_map(democrats, content_transformer(tolower))
+democrats <- tm_map(democrats, stemDocument)
+
+# Same procedure the republicans corpus
+
+republicans <- tm_map(republicans, removePunctuation)
+republicans <- tm_map(republicans, removeNumbers)
+republicans <- tm_map(republicans, removeWords, stopwords ("english"))
+republicans <- tm_map(republicans, content_transformer(tolower))
+republicans <- tm_map(republicans, stemDocument)
+
+# I use the corpuses to create the desired term matrices for democrats
+
+matrix <- DocumentTermMatrix(democrats, control = list(wordLengths = c(5, 20)))
+sum <- colSums(as.matrix(matrix))
+rank <- order(sum, decreasing = TRUE)
+sum[rank]
+
+# Same procedure for republicans
+
+matrix2 <- DocumentTermMatrix(republicans, control = list(wordLengths = c(5, 20)))
+sum2 <- colSums(as.matrix(matrix2))
+rank2 <- order(sum2, decreasing = TRUE)
+sum2[rank2]
+
+# In order to see term associations I use the following function and replace "equal" with the term I want to investigate
+
+findAssocs(matrix, “equal”, 0.6)
+findAssocs(matrix2, “histori”, 0.6)
