@@ -33,7 +33,7 @@ sum2 <- colSums(as.matrix(matrix2))
 rank2 <- order(sum2, decreasing = TRUE)
 sum2[rank2]
 
-# In order to see term associations I use the following function and replace "equal" with the term I want to investigate
+# In order to see term associations I use the following function and replace "equal" with whichever corpus term I want to investigate
 
 findAssocs(matrix, “equal”, 0.6)
 findAssocs(matrix2, “histori”, 0.6)
